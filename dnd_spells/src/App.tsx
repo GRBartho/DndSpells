@@ -1,80 +1,65 @@
-import React, { useState, useEffect } from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import useApp from "./useApp";
 
 function App() {
-  const [spells, setSpells] = useState<any[]>([]); // State to store fetched spells
-  const [id, setId] = useState<number>(0); // State to store ID for deletion
-
-  // Async function to fetch data
-  async function getData() {
-    const url = "http://127.0.0.1:8080/spells";
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
-      const json = await response.json();
-      setSpells(json); // Store spells in state
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  }
-
-  // Handle delete logic
-  async function handleDelete() {
-    const url = `http://127.0.0.1:8080/spells/${id}`; // Adjust URL based on actual API
-    try {
-      const response = await fetch(url, {
-        method: "DELETE", // Specify DELETE method
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to delete spell with ID: ${id}`);
-      }
-
-      // Remove the deleted spell from the state (UI update)
-      setSpells(spells.filter((spell) => spell.id !== id));
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  }
-
-  // Fetch data when the component mounts
-  useEffect(() => {
-    getData();
-  }, []); // Empty dependency array to run only once on mount
-
+  const { backToAllSpells, spells, openIndividualSpell, showingIndividual, handleDelete, newSpellProperties, changeSpellProperties, finishCreateForm, editSpell } = useApp();
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-
-        {/* Render the spells in a list */}
+        <nav>
+          <a onClick={() => backToAllSpells()}>Home</a>
+        </nav>
         <div>
           {spells.length > 0 ? (
             <ul>
               {spells.map((spell) => (
-                <li key={spell.id}>
-                  {spell.name} - {spell.damage}
-                </li>
+                <div>
+                  <a onClick={() => openIndividualSpell(spell.id)}>
+                    <p key={spell.id}>
+                      {spell.name} {spell.damage && `- ${spell.damage} ${spell.damage_type && spell.damage_type}`}
+                    </p>{" "}
+                    {showingIndividual && (
+                      <div>
+                        <p>{spell.description}</p>
+                        <p>{spell.school}</p>
+                      </div>
+                    )}
+                  </a>
+                  <button onClick={() => handleDelete(spell.id)}>Delete</button>
+                </div>
               ))}
             </ul>
           ) : (
-            <p>Loading spells...</p>
+            <p>No spells to be shown</p>
           )}
         </div>
-
-        {/* Input for entering the ID to delete */}
-        <input type="number" value={id} onChange={(e) => setId(Number(e.target.value))} placeholder="Enter spell ID" />
-        <button onClick={handleDelete}>Delete</button>
-
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
+        <div>
+          {!showingIndividual ? <h1>Add Spells</h1> : <h1>Edit Spell</h1>}
+          <div className="addSpellForm">
+            <div className="inputDiv">
+              <p>Name</p>
+              <input value={newSpellProperties.name} onChange={(e) => changeSpellProperties(e.target.value, "name")} />
+            </div>
+            <div className="inputDiv">
+              <p>Damage</p>
+              <input value={newSpellProperties.damage} onChange={(e) => changeSpellProperties(e.target.value, "damage")} />
+            </div>
+            <div className="inputDiv">
+              <p>Description</p>
+              <input value={newSpellProperties.description} onChange={(e) => changeSpellProperties(e.target.value, "description")} />
+            </div>
+            <div className="inputDiv">
+              <p>Damage Type</p>
+              <input value={newSpellProperties.damage_type} onChange={(e) => changeSpellProperties(e.target.value, "damage_type")} />
+            </div>
+            <div className="inputDiv">
+              <p>School</p>
+              <input value={newSpellProperties.school} onChange={(e) => changeSpellProperties(e.target.value, "school")} />
+            </div>
+            {showingIndividual ? <button onClick={() => editSpell(spells[0].id)}>Edit Spell</button> : <button onClick={() => finishCreateForm()}>Create New Spell</button>}
+            {showingIndividual && <button onClick={() => backToAllSpells()}>Return to all spells</button>}
+          </div>
+        </div>
       </header>
     </div>
   );

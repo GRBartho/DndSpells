@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "id": 1,
+    "name": "123",
+    "damage": "123",
+    "description": "123",
+    "damage_type": "123",
+    "school": "123"
+  },
+  {
+    "id": 2,
+    "name": "Nome",
+    "damage": "8d6",
+    "description": "Banana",
+    "damage_type": "",
+    "school": ""
+  }
+]
