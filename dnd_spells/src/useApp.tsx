@@ -4,14 +4,8 @@ import { Spell } from "./types";
 const useApp = () => {
   const [spells, setSpells] = useState<any[]>([]);
   const [showingIndividual, setShowingIndividual] = useState<boolean>(false);
-  const [newSpellProperties, setNewSpellProperties] = useState<Spell>({
-    id: 0,
-    name: "",
-    damage: "",
-    description: "",
-    damage_type: "",
-    school: "",
-  });
+  const defaultSpell = { id: 0, name: "", damage: "", description: "", damage_type: "", school: "" };
+  const [newSpellProperties, setNewSpellProperties] = useState<Spell>(defaultSpell);
 
   const changeSpellProperties = (text: string, property: "name" | "damage" | "description" | "damage_type" | "school") => {
     setNewSpellProperties((oldSpell) => ({ ...oldSpell, [property]: text }));
@@ -20,10 +14,12 @@ const useApp = () => {
   const openIndividualSpell = (id: number) => {
     setShowingIndividual(true);
     getIndividialData(id);
+    setNewSpellProperties(spells[0]);
   };
 
   const backToAllSpells = () => {
     setShowingIndividual(false);
+    setNewSpellProperties(defaultSpell);
     getData();
   };
 

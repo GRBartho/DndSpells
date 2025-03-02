@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-import fs from "fs-extra"; // ✅ Use ES Module import
-import { Spell } from "./types"; // ✅ Ensure `Spell` type is correctly defined
+import fs from "fs-extra";
+import { Spell } from "./types";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -72,11 +72,11 @@ app.put("/spells/:id", ((req: Request, res: Response) => {
 
   spells[spellIndex] = {
     ...spells[spellIndex],
-    name: name ?? spells[spellIndex].name,
-    damage: damage ?? spells[spellIndex].damage,
-    description: description ?? spells[spellIndex].description,
-    damage_type: damage_type ?? spells[spellIndex].damage_type,
-    school: school ?? spells[spellIndex].school,
+    name: name,
+    damage: damage,
+    description: description,
+    damage_type: damage_type,
+    school: school,
   };
 
   saveSpells(spells);

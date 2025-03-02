@@ -1,18 +1,26 @@
 [
   {
     "id": 1,
-    "name": "123",
-    "damage": "123",
-    "description": "123",
-    "damage_type": "123",
-    "school": "123"
+    "name": "Acid Splash",
+    "damage": "1d6",
+    "description": "You hurl a bubble of acid. Choose one creature you can see within range, or choose two creatures you can see within range that are within 5 feet of each other. A target must succeed on a Dexterity saving throw or take 1d6 acid damage.  At Higher Levels. This spell’s damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).",
+    "damage_type": "Acid",
+    "school": "Conjuration"
   },
   {
     "id": 2,
-    "name": "Nome",
-    "damage": "8d6",
-    "description": "Banana",
+    "name": "Bane",
+    "damage": "",
+    "description": "Up to three creatures of your choice that you can see within range must make Charisma saving throws. Whenever a target that fails this saving throw makes an attack roll or a saving throw before the spell ends, the target must roll a d4 and subtract the number rolled from the attack roll or saving throw.",
     "damage_type": "",
-    "school": ""
+    "school": "Enchantment"
+  },
+  {
+    "id": 3,
+    "name": "Fireball",
+    "damage": "8d6",
+    "description": "A bright streak flashes from your pointing finger to a point you choose within range then blossoms with a low roar into an explosion of flame. Each creature in a 20-foot radius must make a Dexterity saving throw. A target takes 8d6 fire damage on a failed save, or half as much damage on a successful one. The fire spreads around corners. It ignites flammable objects in the area that aren’t being worn or carried.",
+    "damage_type": "Fire",
+    "school": "Evocation"
   }
 ]
