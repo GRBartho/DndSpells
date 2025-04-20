@@ -29,10 +29,7 @@ app.post("/spells", ((req: Request, res: Response) => {
   const newSpell: Spell = {
     id: spells.length ? spells[spells.length - 1].id + 1 : 1,
     name,
-    damage,
     description,
-    damage_type,
-    school,
   };
 
   spells.push(newSpell);
@@ -73,10 +70,7 @@ app.put("/spells/:id", ((req: Request, res: Response) => {
   spells[spellIndex] = {
     ...spells[spellIndex],
     name: name,
-    damage: damage,
     description: description,
-    damage_type: damage_type,
-    school: school,
   };
 
   saveSpells(spells);

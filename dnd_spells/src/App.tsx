@@ -1,97 +1,88 @@
+import { Button } from "@mui/material";
 import "./App.css";
-import useApp from "./useApp";
+import { useState } from "react";
+import { Campaign, CampaignSimplified } from "./types";
 
 function App() {
-  const { backToAllSpells, spells, openIndividualSpell, showingIndividual, handleDelete, newSpellProperties, changeSpellProperties, finishCreateForm, editSpell } = useApp();
+  const [viewedCampaign, setViewedCampaign] = useState<null | number>(null);
+  const campaigns: CampaignSimplified[] = [
+    { id: 0, name: "Campaign 1" },
+    { id: 1, name: "Campaign 2" },
+  ];
+  const campaignsFull: Campaign[] = [
+    {
+      id: 0,
+      name: "Campaign 1",
+      description: "Description of Campaign 1",
+      players: ["Player 1", "Player 2"],
+      quests: [
+        { id: 0, name: "Quest 1", description: "Description of Quest 1" },
+        { id: 1, name: "Quest 2", description: "Description of Quest 2" },
+      ],
+      characters: ["Character 1", "Character 2"],
+      npcs: ["NPC 1", "NPC 2"],
+      notes: ["Note 1", "Note 2"],
+    },
+    {
+      id: 1,
+      name: "Campaign 2",
+      description: "Description of Campaign 2",
+      players: ["Player A", "Player B"],
+      quests: [
+        { id: 0, name: "Quest A", description: "Description of Quest A" },
+        { id: 1, name: "Quest B", description: "Description of Quest B" },
+      ],
+      characters: ["Character A", "Character B"],
+      npcs: ["NPC A", "NPC B"],
+      notes: ["Note A", "Note B"],
+    },
+  ];
+  const deletecampaign = (id: number) => {
+    console.log("Deleting campaign with id:", id);
+    // Implement the delete logic here
+  };
+
   return (
-    <div className="App">
-      <nav className="nav">
-        <a onClick={() => backToAllSpells()} className="homeButton">
-          Home
-        </a>
-      </nav>
-      <header className="App-header">
-        <div>
-          {!showingIndividual ? <h1>Add Spells</h1> : <h1>Edit Spell</h1>}
-          <div className="addSpellForm">
-            <div className="inputDiv">
-              <p>Name</p>
-              <input className="input" value={newSpellProperties.name} onChange={(e) => changeSpellProperties(e.target.value, "name")} />
-            </div>
-            <div className="inputDiv">
-              <p>Damage</p>
-              <input className="input" value={newSpellProperties.damage} onChange={(e) => changeSpellProperties(e.target.value, "damage")} />
-            </div>
-            <div className="inputDiv">
-              <p>Damage Type</p>
-              <input className="input" value={newSpellProperties.damage_type} onChange={(e) => changeSpellProperties(e.target.value, "damage_type")} />
-            </div>
-            <div className="inputDiv">
-              <p>School</p>
-              <input className="input" value={newSpellProperties.school} onChange={(e) => changeSpellProperties(e.target.value, "school")} />
-            </div>
-            <div className="inputDiv">
-              <p>Description</p>
-              <input className="input" value={newSpellProperties.description} onChange={(e) => changeSpellProperties(e.target.value, "description")} />
-            </div>
-            {showingIndividual ? (
-              <button className="button" onClick={() => editSpell(spells[0].id)}>
-                Edit Spell
-              </button>
-            ) : (
-              <button className="button" onClick={() => finishCreateForm()}>
-                Create New Spell
-              </button>
-            )}
-            {showingIndividual && (
-              <button className="button" onClick={() => backToAllSpells()}>
-                Return to all spells
-              </button>
-            )}
+    <div>
+      <div className="outerCardDiv">
+        {viewedCampaign === null && (
+          <div>
+            {campaigns.map((campaign, index) => (
+              <div key={index} className="card">
+                <div className="cardContent">
+                  <h2>{campaign.name}</h2>
+                  <Button variant="contained" onClick={() => setViewedCampaign(campaign.id)} color="primary">
+                    View Campaign
+                  </Button>
+                  <Button variant="contained" color="secondary">
+                    Delete Campaign
+                  </Button>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-        <div>
-          {spells.length > 0 ? (
-            <ul className="spellList">
-              {spells.map((spell) => (
-                <div className="spellCard">
-                  <div className="spellInfo" onClick={() => openIndividualSpell(spell.id)}>
-                    <div className="spellProperty">
-                      <p className="label">Name: </p>
-                      <p className="text">{spell.name}</p>
-                    </div>
-                    {spell.damage && (
-                      <div className="spellProperty">
-                        <p className="label">Damage: </p>
-                        <p className="text">
-                          {spell.damage} {spell.damage_type}
-                        </p>
-                      </div>
-                    )}
-                    {showingIndividual && (
-                      <div>
-                        <div className="spellProperty">
-                          <p className="label">Description: </p>
-                          <p className="text">{spell.description}</p>
-                        </div>
-                        <div className="spellProperty">
-                          <p className="label">School: </p>
-                          <p className="text">{spell.school}</p>
-                        </div>
-                      </div>
-                    )}
+        )}
+        {viewedCampaign !== null && (
+          <div>
+            {campaignsFull
+              .filter((campaign) => campaign.id === viewedCampaign)
+              .map((campaign, index) => (
+                <div key={index} className="card">
+                  <div className="cardContent">
+                    <h2>{campaign.name}</h2>
+                    <p>{campaign.description}</p>
+                    <Button variant="contained" onClick={() => setViewedCampaign(null)} color="primary">
+                      Back to Campaigns
+                    </Button>
+                    <Button variant="contained" onClick={() => deletecampaign(campaign.id)} color="secondary">
+                      Delete Campaign
+                    </Button>
                   </div>
-                  <button className="deleteButton" onClick={() => handleDelete(spell.id)}>
-                    Delete
-                  </button>
                 </div>
               ))}
-            </ul>
-          ) : (
-            <p>No spells to be shown</p>
-          )}
-        </div>
-      </header>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

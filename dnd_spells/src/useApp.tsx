@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Spell } from "./types";
 
 const useApp = () => {
-  const [spells, setSpells] = useState<any[]>([]);
+  /*   const [spells, setSpells] = useState<any[]>([]);
   const [showingIndividual, setShowingIndividual] = useState<boolean>(false);
   const defaultSpell = { id: 0, name: "", damage: "", description: "", damage_type: "", school: "" };
   const [newSpellProperties, setNewSpellProperties] = useState<Spell>(defaultSpell);
@@ -131,7 +131,7 @@ const useApp = () => {
     }
   };
 
-  return { backToAllSpells, spells, openIndividualSpell, showingIndividual, handleDelete, newSpellProperties, changeSpellProperties, finishCreateForm, editSpell };
+  return { backToAllSpells, spells, openIndividualSpell, showingIndividual, handleDelete, newSpellProperties, changeSpellProperties, finishCreateForm, editSpell }; */
 };
 
 export default useApp;
