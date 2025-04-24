@@ -59,6 +59,15 @@ app.get("/campaigns/user/:userId", (req: Request, res: Response) => {
   res.json(simplified);
 });
 
+// DELETE /campaigns/:id - Delete campaign by ID
+app.delete("/campaigns/:id", ((req: Request, res: Response) => {
+  const id = parseInt(req.params.id);
+  const campaigns = getCampaigns();
+  const updatedCampaigns = campaigns.filter((c) => c.id !== id);
+  saveCampaigns(updatedCampaigns);
+  res.status(204).send();
+}) as express.RequestHandler);
+
 // GET /campaigns/:id - Get full campaign by ID
 app.get("/campaigns/:id", ((req: Request, res: Response) => {
   const id = parseInt(req.params.id);
