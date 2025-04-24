@@ -1,0 +1,35 @@
+[
+  {
+    "id": 3,
+    "name": "Banana",
+    "system": "Dungeons And Dragons",
+    "userId": 0,
+    "players": [],
+    "quests": [],
+    "characters": [],
+    "npcs": [],
+    "notes": []
+  },
+  {
+    "id": 4,
+    "name": "Myrtle",
+    "system": "D&D",
+    "userId": 0,
+    "players": [],
+    "quests": [],
+    "characters": [],
+    "npcs": [],
+    "notes": []
+  },
+  {
+    "id": 5,
+    "name": "Cool Campaign",
+    "system": "D&D",
+    "userId": 0,
+    "players": [],
+    "quests": [],
+    "characters": [],
+    "npcs": [],
+    "notes": []
+  }
+]

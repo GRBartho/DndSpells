@@ -1,89 +1,79 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import fs from "fs-extra";
-import { Spell } from "./types";
+import { Campaign } from "./types";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-const SPELLS_FILE = "spells.json";
+
+const CAMPAIGNS_FILE = "campaigns.json";
 
 app.use(cors());
 app.use(express.json());
 
-const getSpells = (): Spell[] => {
-  return fs.readJsonSync(SPELLS_FILE, { throws: false }) || [];
+// ========== Campaign Helpers ==========
+const getCampaigns = (): Campaign[] => {
+  return fs.readJsonSync(CAMPAIGNS_FILE, { throws: false }) || [];
 };
 
-const saveSpells = (spells: Spell[]): void => {
-  fs.writeJsonSync(SPELLS_FILE, spells, { spaces: 2 });
+const saveCampaigns = (campaigns: Campaign[]): void => {
+  fs.writeJsonSync(CAMPAIGNS_FILE, campaigns, { spaces: 2 });
 };
 
-app.post("/spells", ((req: Request, res: Response) => {
-  const { name, damage, description, damage_type, school } = req.body;
+// ========== Routes ==========
 
-  if (!name) {
-    return res.status(400).json({ error: "Name field is required" });
+// POST /campaigns
+app.post("/campaigns", ((req: Request, res: Response) => {
+  const { name, system, userId } = req.body;
+
+  if (userId === undefined || name === undefined || system === undefined) {
+    return res.status(400).json({ error: "Missing required fields" });
   }
 
-  const spells: Spell[] = getSpells();
-  const newSpell: Spell = {
-    id: spells.length ? spells[spells.length - 1].id + 1 : 1,
+  const campaigns = getCampaigns();
+  const newCampaign: Campaign = {
+    id: campaigns.length ? campaigns[campaigns.length - 1].id + 1 : 1,
     name,
-    description,
+    system,
+    userId,
+    players: [],
+    quests: [],
+    characters: [],
+    npcs: [],
+    notes: [],
   };
 
-  spells.push(newSpell);
-  saveSpells(spells);
+  campaigns.push(newCampaign);
+  saveCampaigns(campaigns);
 
-  res.status(201).json(newSpell);
+  res.status(201).json(newCampaign);
 }) as express.RequestHandler);
 
-app.delete("/spells/:id", ((req: Request, res: Response) => {
-  const { id } = req.params;
-  const spells: Spell[] = getSpells();
-  const filteredSpells = spells.filter((spell) => spell.id !== parseInt(id));
+// GET /campaigns/user/:userId - Get simplified campaigns for a user
+app.get("/campaigns/user/:userId", (req: Request, res: Response) => {
+  const userId = parseInt(req.params.userId);
+  const campaigns = getCampaigns();
 
-  if (spells.length === filteredSpells.length) {
-    return res.status(404).json({ error: "Spell not found" });
-  }
+  const simplified = campaigns.filter((c) => c.userId === userId).map(({ id, name, userId, system }) => ({ id, name, userId, system }));
 
-  saveSpells(filteredSpells);
-  res.json({ message: "Spell deleted successfully" });
-}) as express.RequestHandler);
-
-app.get("/spells", (req: Request, res: Response) => {
-  const spells: Spell[] = getSpells();
-  res.json(spells);
+  res.json(simplified);
 });
 
-app.put("/spells/:id", ((req: Request, res: Response) => {
-  const { id } = req.params;
-  const { name, damage, description, damage_type, school } = req.body;
+// GET /campaigns/:id - Get full campaign by ID
+app.get("/campaigns/:id", ((req: Request, res: Response) => {
+  const id = parseInt(req.params.id);
+  const campaigns = getCampaigns();
 
-  let spells: Spell[] = getSpells();
-  const spellIndex = spells.findIndex((spell) => spell.id === parseInt(id));
+  const campaign = campaigns.find((c) => c.id === id);
 
-  if (spellIndex === -1) {
-    return res.status(404).json({ error: "Spell not found" });
+  if (!campaign) {
+    return res.status(404).json({ error: "Campaign not found" });
   }
 
-  spells[spellIndex] = {
-    ...spells[spellIndex],
-    name: name,
-    description: description,
-  };
-
-  saveSpells(spells);
-  res.json({ message: "Spell updated successfully", spell: spells[spellIndex] });
+  res.json(campaign);
 }) as express.RequestHandler);
 
-app.get("/spells/:id", (req: Request, res: Response) => {
-  const { id } = req.params;
-  const spells: Spell[] = getSpells();
-  const filteredSpells = spells.filter((spell) => spell.id === parseInt(id));
-  res.json(filteredSpells);
-});
-
+// Server start
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

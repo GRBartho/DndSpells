@@ -7,6 +7,8 @@ export interface Spell {
 export interface CampaignSimplified {
   id: number;
   name: string;
+  system: string;
+  userId: number;
 }
 
 export interface Quest {
@@ -15,15 +17,22 @@ export interface Quest {
   description: string;
 }
 
+export interface Note {
+  id: number;
+  title: string;
+  content: string;
+}
+
 export interface Campaign {
   id: number;
   name: string;
-  description: string;
+  userId: number;
+  system: string;
   players: string[];
   quests: Quest[];
-  characters: string[];
-  npcs: string[];
-  notes: string[];
+  characters: Character[];
+  npcs: NPC[];
+  notes: Note[];
 }
 
 export interface Character {
