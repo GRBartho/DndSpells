@@ -92,6 +92,35 @@ const useCampaignsHomePage = ({ setSimplifiedCampaigns, setLoading, currentUserI
     setCurrentOpenModal("campaign");
   };
 
+  const createNote = async (campaignId: number, title: string, description: string) => {
+    try {
+      const res = await fetch(`http://localhost:8080/campaigns/${campaignId}/notes`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, description }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to add note");
+      }
+
+      const newNote = await res.json();
+      console.log("Created Note:", newNote);
+      setCurrentCampaign((prev) => {
+        if (!prev) return prev;
+
+        return {
+          ...prev,
+          notes: [...prev.notes, newNote],
+        };
+      });
+    } catch (error) {
+      console.error("Error creating note:", error);
+    }
+  };
+
   const createCampaign = async (newCampaign: CampaignSimplified) => {
     try {
       const res = await fetch("http://localhost:8080/campaigns", {
@@ -160,6 +189,7 @@ const useCampaignsHomePage = ({ setSimplifiedCampaigns, setLoading, currentUserI
     setCurrentViewedCharacter,
     currentOpenModal,
     setCurrentOpenModal,
+    createNote,
   };
 };
 

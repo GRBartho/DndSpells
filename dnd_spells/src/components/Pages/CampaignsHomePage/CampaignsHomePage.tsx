@@ -1,6 +1,6 @@
 import { Typography, Button, CircularProgress } from "@mui/material";
 import CharacterCard from "../../CharacterCard/CharacterCard";
-import NewCampaignDialog from "../../Dialogs/NewCampaignDialog";
+import NewCampaignDialog from "../../Dialogs/NewCampaignDialog/NewCampaignDialog";
 import FullCharacter from "../../FullCharacter/FullCharacter";
 import NoteCard from "../../NoteCard/NoteCard";
 import NPCCard from "../../NPCCard/NPCCard";
@@ -8,6 +8,7 @@ import QuestCard from "../../QuestCard/QuestCard";
 import { useStyles } from "./CampaignsHomePageStyles";
 import useCampaignsHomePage from "./useCampaignsHomePage";
 import { CampaignSimplified } from "../../../types";
+import NewNoteDialog from "../../Dialogs/NewNoteDialog/NewNoteDialog";
 
 interface campaignsHomePageProps {
   loading: boolean;
@@ -45,6 +46,7 @@ const CampaignsHomePage = ({ loading, setLoading, simplifiedCampaigns, setSimpli
     setCurrentViewedCharacter,
     currentOpenModal,
     setCurrentOpenModal,
+    createNote,
   } = useCampaignsHomePage({ setSimplifiedCampaigns, setLoading, currentUserId, fetchUserCampaigns });
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
@@ -205,6 +207,7 @@ const CampaignsHomePage = ({ loading, setLoading, simplifiedCampaigns, setSimpli
             </div>
           )}
           <NewCampaignDialog open={currentOpenModal === "campaign"} createCampaign={createCampaign} close={() => setCurrentOpenModal(null)} currentUserId={0} />
+          {currentCampaign && <NewNoteDialog open={currentOpenModal === "note"} createNote={createNote} currentCampaign={currentCampaign} close={() => setCurrentOpenModal(null)} />}
         </div>
       )}
     </div>

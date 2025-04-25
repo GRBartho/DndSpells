@@ -8,18 +8,23 @@
     "quests": [],
     "characters": [],
     "npcs": [],
-    "notes": []
-  },
-  {
-    "id": 6,
-    "name": "1234",
-    "system": "1234",
-    "userId": 0,
-    "players": [],
-    "quests": [],
-    "characters": [],
-    "npcs": [],
-    "notes": []
+    "notes": [
+      {
+        "id": 1,
+        "title": "Very Cool Note",
+        "content": "Even Cooler Description"
+      },
+      {
+        "id": 2,
+        "title": "New Note",
+        "content": "Nothing to see here"
+      },
+      {
+        "id": 3,
+        "title": "Another new note",
+        "content": "New description"
+      }
+    ]
   },
   {
     "id": 8,
@@ -37,17 +42,6 @@
     "name": "Cooler Campaign",
     "system": "D&D",
     "userId": 1,
-    "players": [],
-    "quests": [],
-    "characters": [],
-    "npcs": [],
-    "notes": []
-  },
-  {
-    "id": 10,
-    "name": "Banana",
-    "system": "123",
-    "userId": 0,
     "players": [],
     "quests": [],
     "characters": [],

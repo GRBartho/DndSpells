@@ -82,6 +82,33 @@ app.get("/campaigns/:id", ((req: Request, res: Response) => {
   res.json(campaign);
 }) as express.RequestHandler);
 
+app.put("/campaigns/:id/notes", ((req: Request, res: Response) => {
+  const id = parseInt(req.params.id);
+  const { title, description } = req.body;
+
+  if (!title || !description) {
+    return res.status(400).json({ error: "Missing note title or description" });
+  }
+
+  const campaigns = getCampaigns();
+  const campaign = campaigns.find((c) => c.id === id);
+
+  if (!campaign) {
+    return res.status(404).json({ error: "Campaign not found" });
+  }
+
+  const newNote = {
+    id: campaign.notes.length ? campaign.notes[campaign.notes.length - 1].id + 1 : 1,
+    title,
+    content: description, // Map description to content
+  };
+
+  campaign.notes.push(newNote);
+  saveCampaigns(campaigns);
+
+  res.status(200).json(newNote);
+}) as express.RequestHandler);
+
 // Server start
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

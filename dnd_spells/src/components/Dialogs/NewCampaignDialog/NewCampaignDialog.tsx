@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { Campaign } from "../../types";
+import { Campaign } from "../../../types";
 
 interface NewCampaignDialogProps {
   open: boolean;
