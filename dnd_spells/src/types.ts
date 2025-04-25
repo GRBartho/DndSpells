@@ -35,6 +35,12 @@ export interface Campaign {
   notes: Note[];
 }
 
+export interface User {
+  id: number;
+  username: string;
+  password: string;
+}
+
 export interface Character {
   id: number;
   name: string;

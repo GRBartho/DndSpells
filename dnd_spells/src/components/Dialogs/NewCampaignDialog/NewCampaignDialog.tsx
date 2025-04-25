@@ -5,7 +5,7 @@ import { Campaign } from "../../../types";
 interface NewCampaignDialogProps {
   open: boolean;
   createCampaign: (campaign: Campaign) => void;
-  currentUserId: number;
+  currentUserId: number | null;
   close: () => void;
 }
 
@@ -14,7 +14,7 @@ const NewCampaignDialog = ({ open, createCampaign, currentUserId, close }: NewCa
     () => ({
       id: -1,
       name: "",
-      userId: currentUserId,
+      userId: currentUserId ?? -1,
       system: "",
       players: [],
       quests: [],

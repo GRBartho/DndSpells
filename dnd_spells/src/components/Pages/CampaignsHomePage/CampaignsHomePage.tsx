@@ -208,7 +208,7 @@ const CampaignsHomePage = ({ loading, setLoading, simplifiedCampaigns, setSimpli
               )}
             </div>
           )}
-          <NewCampaignDialog open={currentOpenModal === "campaign"} createCampaign={createCampaign} close={() => setCurrentOpenModal(null)} currentUserId={0} />
+          <NewCampaignDialog open={currentOpenModal === "campaign"} createCampaign={createCampaign} close={() => setCurrentOpenModal(null)} currentUserId={currentUserId} />
           {currentCampaign && (
             <div>
               <NewQuestDialog open={currentOpenModal === "quest"} createQuest={createQuest} currentCampaign={currentCampaign} close={() => setCurrentOpenModal(null)} />

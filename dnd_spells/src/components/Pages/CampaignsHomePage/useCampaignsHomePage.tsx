@@ -181,7 +181,6 @@ const useCampaignsHomePage = ({ setSimplifiedCampaigns, setLoading, currentUserI
       }
 
       const newNPC = await res.json();
-      console.log("Created NPC:", newNPC);
       setCurrentCampaign((prev) => {
         if (!prev) return prev;
 
@@ -210,7 +209,6 @@ const useCampaignsHomePage = ({ setSimplifiedCampaigns, setLoading, currentUserI
       }
 
       const newCharacter = await res.json();
-      console.log("Created Character:", newCharacter);
       setCurrentCampaign((prev) => {
         if (!prev) return prev;
 
@@ -239,7 +237,6 @@ const useCampaignsHomePage = ({ setSimplifiedCampaigns, setLoading, currentUserI
       }
 
       const newNote = await res.json();
-      console.log("Created Note:", newNote);
       setCurrentCampaign((prev) => {
         if (!prev) return prev;
 
@@ -267,7 +264,6 @@ const useCampaignsHomePage = ({ setSimplifiedCampaigns, setLoading, currentUserI
       }
 
       const newQuest = await res.json();
-      console.log("Created Quest:", newQuest);
       setCurrentCampaign((prev) => {
         if (!prev) return prev;
 
@@ -294,7 +290,6 @@ const useCampaignsHomePage = ({ setSimplifiedCampaigns, setLoading, currentUserI
       }
 
       const createdCampaign = await res.json();
-      console.log("Created Campaign:", createdCampaign);
 
       // Update simplifiedCampaigns state with the newly created campaign
       setSimplifiedCampaigns((prev) => [...prev, createdCampaign]);

@@ -45,6 +45,7 @@ const useApp = () => {
       setLoading(true);
       const campaigns = await fetchUserCampaigns(user.id);
       setSimplifiedCampaigns(campaigns);
+      setCurrentTypedUser({ username: "", password: "" });
       setLoading(false);
     } catch (err) {
       console.error(err);
@@ -73,6 +74,7 @@ const useApp = () => {
     simplifiedCampaigns,
     setSimplifiedCampaigns,
     fetchUserCampaigns,
+    currentTypedUser,
   };
 };
 

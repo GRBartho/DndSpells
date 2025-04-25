@@ -5,10 +5,10 @@ import CampaignsHomePage from "./components/Pages/CampaignsHomePage/CampaignsHom
 
 function App() {
   const classes = useStyles();
-  const { currentUserId, setCurrentUserId, findUser, setCurrentTypedUser, loading, setLoading, simplifiedCampaigns, setSimplifiedCampaigns, fetchUserCampaigns } = useApp();
+  const { currentUserId, setCurrentUserId, findUser, setCurrentTypedUser, loading, setLoading, simplifiedCampaigns, setSimplifiedCampaigns, fetchUserCampaigns, currentTypedUser } = useApp();
   return (
     <div className={classes.app}>
-      {currentUserId === null && loading && <LoginPage setCurrentTypedUser={setCurrentTypedUser} findUser={findUser} />}
+      {currentUserId === null && loading && <LoginPage currentTypedUser={currentTypedUser} setCurrentTypedUser={setCurrentTypedUser} findUser={findUser} />}
       {currentUserId !== null && (
         <CampaignsHomePage
           loading={loading}
