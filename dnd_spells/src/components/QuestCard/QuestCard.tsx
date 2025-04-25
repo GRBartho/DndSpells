@@ -18,9 +18,7 @@ const QuestCard = ({ quest, deleteFunction }: QuestCardProps) => {
           <Typography>{quest.description}</Typography>
           <Button
             onClick={() => {
-              if (window.confirm("Are you sure you want to delete this character?")) {
-                deleteFunction(quest.id);
-              }
+              deleteFunction(quest.id);
             }}
             variant="contained"
             color="primary"

@@ -41,26 +41,87 @@ const useCampaignsHomePage = ({ setSimplifiedCampaigns, setLoading, currentUserI
   };
 
   //Delete functions
-  const deleteQuest = (questId: number) => {
-    console.log("Deleting quest with id:", questId);
-    // Implement the delete logic here
+  const deleteQuest = async (questId: number) => {
+    try {
+      if (!currentCampaign) {
+        throw new Error("No campaign selected");
+      }
+      const res = await fetch(`http://localhost:8080/campaigns/${currentCampaign.id}/quests/${questId}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete quest");
+
+      setCurrentCampaign((prev) => ({
+        ...prev!,
+        quests: prev!.quests.filter((q) => q.id !== questId),
+      }));
+    } catch (err) {
+      console.error("Error deleting quest:", err);
+    }
   };
-  const deleteCharacter = (characterId: number) => {
-    console.log("Deleting character with id:", characterId);
-    // Implement the delete logic here
+
+  const deleteCharacter = async (characterId: number) => {
+    try {
+      if (!currentCampaign) {
+        throw new Error("No campaign selected");
+      }
+      const res = await fetch(`http://localhost:8080/campaigns/${currentCampaign.id}/characters/${characterId}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete character");
+
+      setCurrentViewedCharacter(null);
+      setCurrentCampaign((prev) => ({
+        ...prev!,
+        characters: prev!.characters.filter((c) => c.id !== characterId),
+      }));
+    } catch (err) {
+      console.error("Error deleting character:", err);
+    }
   };
-  const deleteSpell = (spellId: number) => {
-    console.log("Deleting spell with id:", spellId);
-    // Implement the delete logic here
+
+  const deleteNPC = async (npcId: number) => {
+    try {
+      if (!currentCampaign) {
+        throw new Error("No campaign selected");
+      }
+      const res = await fetch(`http://localhost:8080/campaigns/${currentCampaign.id}/npcs/${npcId}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete NPC");
+
+      setCurrentCampaign((prev) => ({
+        ...prev!,
+        npcs: prev!.npcs.filter((n) => n.id !== npcId),
+      }));
+    } catch (err) {
+      console.error("Error deleting NPC:", err);
+    }
   };
-  const deleteNPC = (npcId: number) => {
-    console.log("Deleting NPC with id:", npcId);
-    // Implement the delete logic here
+
+  const deleteNote = async (noteId: number) => {
+    try {
+      if (!currentCampaign) {
+        throw new Error("No campaign selected");
+      }
+      const res = await fetch(`http://localhost:8080/campaigns/${currentCampaign.id}/notes/${noteId}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete note");
+
+      setCurrentCampaign((prev) => ({
+        ...prev!,
+        notes: prev!.notes.filter((n) => n.id !== noteId),
+      }));
+    } catch (err) {
+      console.error("Error deleting note:", err);
+    }
   };
-  const deleteNote = (noteId: number) => {
-    console.log("Deleting note with id:", noteId);
-    // Implement the delete logic here
-  };
+
   const deleteCampaign = async (campaignId: number) => {
     try {
       const res = await fetch(`http://localhost:8080/campaigns/${campaignId}`, {
@@ -91,6 +152,77 @@ const useCampaignsHomePage = ({ setSimplifiedCampaigns, setLoading, currentUserI
   const addCampaign = () => {
     setCurrentOpenModal("campaign");
   };
+  const addNewCharacter = () => {
+    setCurrentOpenModal("character");
+  };
+
+  const addNote = () => {
+    setCurrentOpenModal("note");
+  };
+  const addQuest = () => {
+    setCurrentOpenModal("quest");
+  };
+  const addNPC = () => {
+    setCurrentOpenModal("npc");
+  };
+
+  const createNPC = async (campaignId: number, name: string, description: string) => {
+    try {
+      const res = await fetch(`http://localhost:8080/campaigns/${campaignId}/npcs`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, description }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to add NPC");
+      }
+
+      const newNPC = await res.json();
+      console.log("Created NPC:", newNPC);
+      setCurrentCampaign((prev) => {
+        if (!prev) return prev;
+
+        return {
+          ...prev,
+          npcs: [...prev.npcs, newNPC],
+        };
+      });
+    } catch (error) {
+      console.error("Error creating NPC:", error);
+    }
+  };
+
+  const createCharacter = async (campaignId: number, character: any) => {
+    try {
+      const res = await fetch(`http://localhost:8080/campaigns/${campaignId}/characters`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(character),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to add character");
+      }
+
+      const newCharacter = await res.json();
+      console.log("Created Character:", newCharacter);
+      setCurrentCampaign((prev) => {
+        if (!prev) return prev;
+
+        return {
+          ...prev,
+          characters: [...prev.characters, newCharacter],
+        };
+      });
+    } catch (error) {
+      console.error("Error creating character:", error);
+    }
+  };
 
   const createNote = async (campaignId: number, title: string, description: string) => {
     try {
@@ -120,6 +252,34 @@ const useCampaignsHomePage = ({ setSimplifiedCampaigns, setLoading, currentUserI
       console.error("Error creating note:", error);
     }
   };
+  const createQuest = async (campaignId: number, name: string, description: string) => {
+    try {
+      const res = await fetch(`http://localhost:8080/campaigns/${campaignId}/quests`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, description }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to add quest");
+      }
+
+      const newQuest = await res.json();
+      console.log("Created Quest:", newQuest);
+      setCurrentCampaign((prev) => {
+        if (!prev) return prev;
+
+        return {
+          ...prev,
+          quests: [...prev.quests, newQuest],
+        };
+      });
+    } catch (error) {
+      console.error("Error creating quest:", error);
+    }
+  };
 
   const createCampaign = async (newCampaign: CampaignSimplified) => {
     try {
@@ -143,28 +303,6 @@ const useCampaignsHomePage = ({ setSimplifiedCampaigns, setLoading, currentUserI
     }
   };
 
-  const addNewCharacter = () => {
-    setCurrentOpenModal("character");
-    // Implement the add logic here
-  };
-
-  const addNote = () => {
-    setCurrentOpenModal("note");
-    // Implement the add logic here
-  };
-  const addQuest = () => {
-    setCurrentOpenModal("quest");
-    // Implement the add logic here
-  };
-  const addNPC = () => {
-    setCurrentOpenModal("npc");
-    // Implement the add logic here
-  };
-  const addSpell = () => {
-    setCurrentOpenModal("spell");
-    // Implement the add logic here
-  };
-
   return {
     viewedCampaign,
     currentViewed,
@@ -174,7 +312,6 @@ const useCampaignsHomePage = ({ setSimplifiedCampaigns, setLoading, currentUserI
     isCurrentViewed,
     deleteQuest,
     deleteCharacter,
-    deleteSpell,
     deleteNPC,
     deleteNote,
     deleteCampaign,
@@ -184,12 +321,14 @@ const useCampaignsHomePage = ({ setSimplifiedCampaigns, setLoading, currentUserI
     addNote,
     addQuest,
     addNPC,
-    addSpell,
     setCurrentViewed,
     setCurrentViewedCharacter,
     currentOpenModal,
     setCurrentOpenModal,
     createNote,
+    createQuest,
+    createCharacter,
+    createNPC,
   };
 };
 

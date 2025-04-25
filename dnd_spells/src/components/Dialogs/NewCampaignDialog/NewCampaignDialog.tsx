@@ -12,7 +12,7 @@ interface NewCampaignDialogProps {
 const NewCampaignDialog = ({ open, createCampaign, currentUserId, close }: NewCampaignDialogProps) => {
   const defaultCampaign = useMemo<Campaign>(
     () => ({
-      id: -1, // will be removed before sending
+      id: -1,
       name: "",
       userId: currentUserId,
       system: "",
@@ -35,7 +35,7 @@ const NewCampaignDialog = ({ open, createCampaign, currentUserId, close }: NewCa
   return (
     <Dialog open={open}>
       <DialogTitle>New Campaign</DialogTitle>
-      <DialogContent style={{ paddingTop: 16 }}>
+      <DialogContent style={{ display: "flex", flexDirection: "column", gap: 16, paddingTop: 16 }}>
         <TextField onChange={(e) => setNewCampaign((campaign) => ({ ...campaign, name: e.target.value }))} label="Name" />
         <TextField onChange={(e) => setNewCampaign((campaign) => ({ ...campaign, system: e.target.value }))} label="System" />
       </DialogContent>

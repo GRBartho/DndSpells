@@ -42,11 +42,17 @@ export interface Character {
   hp: number;
   race: string;
   level: number;
-  spells: Spell[];
+  description: string;
 }
 
 export interface NPC {
   id: number;
   name: string;
   description: string;
+}
+
+export interface User {
+  id: number;
+  username: string;
+  password: string;
 }

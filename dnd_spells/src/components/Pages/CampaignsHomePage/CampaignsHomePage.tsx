@@ -9,6 +9,9 @@ import { useStyles } from "./CampaignsHomePageStyles";
 import useCampaignsHomePage from "./useCampaignsHomePage";
 import { CampaignSimplified } from "../../../types";
 import NewNoteDialog from "../../Dialogs/NewNoteDialog/NewNoteDialog";
+import NewQuestDialog from "../../Dialogs/NewQuestDialog/NewQuestDialog";
+import NewCharacterDialog from "../../Dialogs/NewCharacterDialog/NewCharacterDialog";
+import NewNPCDialog from "../../Dialogs/NewNPCDialog/NewNPCDialog";
 
 interface campaignsHomePageProps {
   loading: boolean;
@@ -31,7 +34,6 @@ const CampaignsHomePage = ({ loading, setLoading, simplifiedCampaigns, setSimpli
     isCurrentViewed,
     deleteQuest,
     deleteCharacter,
-    deleteSpell,
     deleteNPC,
     deleteNote,
     deleteCampaign,
@@ -41,12 +43,14 @@ const CampaignsHomePage = ({ loading, setLoading, simplifiedCampaigns, setSimpli
     addNote,
     addQuest,
     addNPC,
-    addSpell,
     setCurrentViewed,
     setCurrentViewedCharacter,
     currentOpenModal,
     setCurrentOpenModal,
     createNote,
+    createQuest,
+    createCharacter,
+    createNPC,
   } = useCampaignsHomePage({ setSimplifiedCampaigns, setLoading, currentUserId, fetchUserCampaigns });
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
@@ -182,9 +186,7 @@ const CampaignsHomePage = ({ loading, setLoading, simplifiedCampaigns, setSimpli
                       )}
                       {currentViewedCharacter !== null && (
                         <FullCharacter
-                          addNewSpell={addSpell}
                           deleteCharacter={deleteCharacter}
-                          deleteSpell={deleteSpell}
                           exit={() => setCurrentViewedCharacter(null)}
                           character={currentCampaign.characters.filter((character) => character.id === currentViewedCharacter)[0]}
                         />
@@ -207,7 +209,14 @@ const CampaignsHomePage = ({ loading, setLoading, simplifiedCampaigns, setSimpli
             </div>
           )}
           <NewCampaignDialog open={currentOpenModal === "campaign"} createCampaign={createCampaign} close={() => setCurrentOpenModal(null)} currentUserId={0} />
-          {currentCampaign && <NewNoteDialog open={currentOpenModal === "note"} createNote={createNote} currentCampaign={currentCampaign} close={() => setCurrentOpenModal(null)} />}
+          {currentCampaign && (
+            <div>
+              <NewQuestDialog open={currentOpenModal === "quest"} createQuest={createQuest} currentCampaign={currentCampaign} close={() => setCurrentOpenModal(null)} />
+              <NewNoteDialog open={currentOpenModal === "note"} createNote={createNote} currentCampaign={currentCampaign} close={() => setCurrentOpenModal(null)} />
+              <NewCharacterDialog open={currentOpenModal === "character"} createCharacter={createCharacter} currentCampaign={currentCampaign} close={() => setCurrentOpenModal(null)} />
+              <NewNPCDialog open={currentOpenModal === "npc"} createNPC={createNPC} currentCampaign={currentCampaign} close={() => setCurrentOpenModal(null)} />
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -42,7 +42,7 @@ export interface Character {
   hp: number;
   race: string;
   level: number;
-  spells: Spell[];
+  description: string;
 }
 
 export interface NPC {

@@ -2,10 +2,6 @@ import { useState, useEffect } from "react";
 import { CampaignSimplified } from "./types";
 
 const useApp = () => {
-  const users = [
-    { id: 0, username: "User1", password: "password1" },
-    { id: 1, username: "User2", password: "password2" },
-  ];
   const [currentUserId, setCurrentUserId] = useState<number | null>(null);
   const [currentTypedUser, setCurrentTypedUser] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(true);
@@ -25,20 +21,34 @@ const useApp = () => {
     }
   }, []);
 
-  const findUser = async () => {
-    const user = users.find((user) => user.username === currentTypedUser.username && user.password === currentTypedUser.password);
+  const findUser = async (creatingUser: boolean) => {
+    try {
+      const endpoint = creatingUser ? "/users/create" : "/users/login";
+      const res = await fetch(`http://localhost:8080${endpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(currentTypedUser),
+      });
 
-    if (user) {
+      if (!res.ok) {
+        const error = await res.json();
+        alert(error.error || "Something went wrong");
+        return;
+      }
+
+      const user = await res.json();
       setCurrentUserId(user.id);
       localStorage.setItem("currentUserId", user.id.toString());
-      setLoading(true);
 
+      setLoading(true);
       const campaigns = await fetchUserCampaigns(user.id);
-      console.log("Fetched campaigns:", campaigns);
       setSimplifiedCampaigns(campaigns);
       setLoading(false);
-    } else {
-      alert("Invalid username or password");
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
     }
   };
 

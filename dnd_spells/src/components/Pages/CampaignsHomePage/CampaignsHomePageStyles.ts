@@ -18,6 +18,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: theme.spacing(1),
     paddingTop: theme.spacing(2),
     width: "100%",
+    flexWrap: "wrap",
   },
   outerCharacterContainer: {
     width: "100%",

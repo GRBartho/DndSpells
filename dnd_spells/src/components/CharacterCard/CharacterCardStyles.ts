@@ -13,5 +13,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
     backgroundColor: theme.palette.background.paper,
+    textAlign: "center",
+    cursor: "pointer",
   },
 }));
